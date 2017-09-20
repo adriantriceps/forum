@@ -21,15 +21,25 @@
                             <button class="btn btn-primary">Publish</button>
                         </div>
                     </form>
-                    @foreach ($countries as $country)
-                      @if ($country != 'Irland')
-                        <h1>{{ $country }}</h1>
-                      @endif
-
-                      @if ($country == 'Irland')
-                        <p>{{ $country }}</p>
-                      @endif
-                    @endforeach
+                    <ul>
+                      @foreach ($tasks as $task)
+                        @if($task['complete'] != true)
+                          <li>
+                            <a href="{{ $task['link']}}">
+                              {{ $task['title'] }}
+                            </a>
+                          </li>
+                        @else
+                          <li>
+                            <s>
+                              <a href="{{ $task['link']}}">
+                                {{ $task['title'] }}
+                              </a>
+                            </s>
+                          </li>
+                        @endif
+                      @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
