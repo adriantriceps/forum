@@ -27,7 +27,7 @@ class ThreadsController extends Controller
         ['title' => 'Kaupa í mat', 'complete' => false, 'link' => 'https://www.aha.is/verslun/netto-mjodd' ],
         ['title' => 'Borða', 'complete' => false, 'link' => 'http://kfc.is'],
         ['title' => 'Sofa', 'complete' => false, 'link' => 'https://www.dorma.is'],
-        ['title' => 'Fara ì sturtu', 'complete' => false, 'link' => 'https://www.byko.is']
+        ['title' => 'Fara ì sturtu', 'complete' => false, 'link' => 'https://www.dorma.is']
         ];
       return view('threads.create', compact('tasks'));
     }
