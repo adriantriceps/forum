@@ -36,4 +36,9 @@ class ThreadsController extends Controller
     {
       return view('threads.show');
     }
+
+    public function store()
+    {
+        dd('Store Method');
+    }
 }
