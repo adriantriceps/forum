@@ -6,41 +6,22 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Forum Threads</div>
-
+                @include('common.errors')
                 <div class="panel-body">
                     <form method="POST" action="/threads">
                       {{ csrf_field()}}
                         <div class="form-group">
                             <label>Title: </label>
-                            <input type="text" name="title" class="form-control">
+                            <input type="text" name="title" class="form-control" value="{{ old('title') }}">
                         </div>
                         <div class="form-group">
                             <label>Body: </label>
-                            <textarea type="text" name="title" class="form-control" rows="8"></textarea>
+                            <textarea type="text" name="body" class="form-control" rows="8" >{{ Input::old('body') }}</textarea>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-primary">Publish</button>
                         </div>
                     </form>
-                    <ul>
-                      @foreach ($tasks as $task)
-                        @if($task['complete'] != true)
-                          <li>
-                            <a href="{{ $task['link']}}">
-                              {{ $task['title'] }}
-                            </a>
-                          </li>
-                        @else
-                          <li>
-                            <s>
-                              <a href="{{ $task['link']}}">
-                                {{ $task['title'] }}
-                              </a>
-                            </s>
-                          </li>
-                        @endif
-                      @endforeach
-                    </ul>
                 </div>
             </div>
         </div>

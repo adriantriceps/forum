@@ -2,43 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Thread;
+use Auth;
 
 class ThreadsController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('auth')->except('index','show');
+  }
     //Returns Threads/index.php
     public function index()
     {
-      $threads = [
-        ['title' => 'Title A', 'body' => 'Lorem Ipsum dolor set.'],
-        ['title' => 'Title B', 'body' => 'Þetta er B']
-      ];
+      $threads = Thread::latest()->get();
 
       return view('threads.index', compact('threads'));
     }
 
     public function create()
     {
-      $tasks = [
-        [ 'title' => 'Kaupa mjólk', 'complete' => true, 'link' => 'https://www.aha.is/verslun/netto-mjodd/byrjendakorfur/ms-nymjolk-1-5l' ],
-        ['title' => 'Henda rusl', 'complete' => true, 'link' => 'http://kalka.is' ],
-        ['title' => 'Elda mat', 'complete' => false, 'link' => 'https://eldumrett.is'],
-        ['title' => 'Henda mat', 'complete' => true, 'link' => 'http://kalka.is'],
-        ['title' => 'Kaupa í mat', 'complete' => false, 'link' => 'https://www.aha.is/verslun/netto-mjodd' ],
-        ['title' => 'Borða', 'complete' => false, 'link' => 'http://kfc.is'],
-        ['title' => 'Sofa', 'complete' => false, 'link' => 'https://www.dorma.is'],
-        ['title' => 'Fara ì sturtu', 'complete' => false, 'link' => 'https://www.dorma.is']
-        ];
-      return view('threads.create', compact('tasks'));
+      return view('threads.create');
     }
 
     public function show($id)
     {
-      return view('threads.show');
+      $thread = Thread::find($id);
+      return view('threads.show', compact('thread'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        dd('Store Method');
+        //VALIDATE
+        $thread = new Thread;
+      //   $this->validate($request, [
+      //  'title' => 'required|max:40',
+      //  'body' => 'required|min:20',
+      //   ]);
+        $validator = Validator::make($request->all(), [
+          'title' => 'required|max:40',
+          'body' => 'required|min:20',
+        ]);
+
+      //  dd($validator);
+
+        if ($validator->fails()) {
+          return redirect('/threads/create')
+            ->withInput()
+            ->withErrors($validator);
+        }
+        $thread->title = $request->title;
+        $thread->body = $request->body;
+        $thread->user_id = Auth::id();
+        $thread->save();
+        return redirect('/threads');
     }
 }
