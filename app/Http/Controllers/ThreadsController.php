@@ -8,6 +8,7 @@ use App\Thread;
 use Auth;
 
 class ThreadsController extends Controller
+
 {
   public function __construct()
   {
