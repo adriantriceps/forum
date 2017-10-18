@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Thread;
 use Auth;
@@ -35,28 +34,19 @@ class ThreadsController extends Controller
 
     public function store(Request $request)
     {
-        //VALIDATE
-        $thread = new Thread;
-      //   $this->validate($request, [
-      //  'title' => 'required|max:40',
-      //  'body' => 'required|min:20',
-      //   ]);
-        $validator = Validator::make($request->all(), [
+        //VALIDATE REQUEST
+        $this->validate($request, [
           'title' => 'required|max:40',
           'body' => 'required|min:20',
         ]);
 
-      //  dd($validator);
+        //Create new Thread
+      Thread::create([
+          'title' => $request->title,
+          'body' => $request->body,
+          'user_id' => auth()->id()
+        ]);
 
-        if ($validator->fails()) {
-          return redirect('/threads/create')
-            ->withInput()
-            ->withErrors($validator);
-        }
-        $thread->title = $request->title;
-        $thread->body = $request->body;
-        $thread->user_id = Auth::id();
-        $thread->save();
         return redirect('/threads');
     }
 }
